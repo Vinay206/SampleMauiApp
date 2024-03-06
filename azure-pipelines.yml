@@ -12,7 +12,7 @@ stages:
         steps:
           - task: JavaToolInstaller@0
             inputs:
-              versionSpec: '11'
+              versionSpec: '17'
               jdkArchitectureOption: 'x64'
               jdkSourceOption: 'PreInstalled'
           - task: UseDotNet@2
@@ -37,7 +37,7 @@ stages:
             displayName: 'Build Android Project'
             inputs:
               command: 'build'
-              projects: '**/*.sln'
+              projects:  '**/SampleMauiApp.csproj' # '**/*.sln'
               arguments: '-f net8.0-android -c Release /p:AndroidSdkDirectory=$androidSdkPath'
           - task: CopyFiles@2
             displayName: 'Copy APK Files to Artifact Staging Directory'
