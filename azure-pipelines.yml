@@ -31,7 +31,7 @@ stages:
             displayName: 'Restore NuGet Packages'
             inputs:
               command: 'restore'
-              projects: '**/*.sln'
+              projects: '**/*.csproj'
               feedsToUse: 'select'
           - task: DotNetCoreCLI@2
             displayName: 'Build Android Project'
