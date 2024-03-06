@@ -1,0 +1,54 @@
+trigger:
+- main
+
+stages:
+  - stage: BuildAndroid
+    displayName: 'Build Android'
+    jobs:
+      - job: Build_MAUI_App
+        displayName: 'Build MAUI App Android'
+        pool:
+          vmImage: windows-latest
+        steps:
+          - task: JavaToolInstaller@0
+            inputs:
+              versionSpec: '11'
+              jdkArchitectureOption: 'x64'
+              jdkSourceOption: 'PreInstalled'
+          - task: UseDotNet@2
+            displayName: 'Use .NET Core SDK'
+            inputs:
+              packageType: 'sdk'
+              version: '8.0.x'
+              includePreviewVersions: true
+          - task: DotNetCoreCLI@2
+            displayName: 'Install MAUI Workloads'
+            inputs:
+              command: 'custom'
+              custom: 'workload'
+              arguments: 'install maui'
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore NuGet Packages'
+            inputs:
+              command: 'restore'
+              projects: '**/*.sln'
+              feedsToUse: 'select'
+          - task: DotNetCoreCLI@2
+            displayName: 'Build Android Project'
+            inputs:
+              command: 'build'
+              projects: '**/*.sln'
+              arguments: '-f net8.0-android -c Release /p:AndroidSdkDirectory=$androidSdkPath'
+          - task: CopyFiles@2
+            displayName: 'Copy APK Files to Artifact Staging Directory'
+            inputs:
+              SourceFolder: '$(Agent.BuildDirectory)'
+              Contents: '**/*.apk'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)'
+              flattenFolders: true
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Build Artifacts'
+            inputs:
+              PathtoPublish: $(Build.ArtifactStagingDirectory)
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
