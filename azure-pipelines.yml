@@ -36,14 +36,15 @@ stages:
               command: 'restore'
               projects: '**/*.csproj'
               feedsToUse: 'select'
-          - task: DotNetCoreCLI@2
-            displayName: 'Run Unit Test'
-            condition: eq(variables.runUnitTest, true)
-            inputs:
-              command: 'test'
-              projects: '**/*SampleMauiApp.Test.csproj'
-              arguments: '--collect "Code Coverage"'
-              publishTestResults: false
+          # - task: DotNetCoreCLI@2
+          #   displayName: 'Run Unit Test'
+          #   condition: eq(variables.runUnitTest, true)
+          #   inputs:
+          #     command: 'test'
+          #     projects: '**/*SampleMauiApp.Test.csproj'
+          #     arguments: '--collect "Code Coverage"'
+          #     publishTestResults: false
+          - script: 'dotnet test MyMauiApp.Tests/SampleMauiApp.Tests.csproj --configuration Release'
           - task: PublishTestResults@2
             displayName: 'Publish Test Results'
             condition: eq(variables.runUnitTest, true)
