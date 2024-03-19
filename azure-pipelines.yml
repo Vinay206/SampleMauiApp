@@ -1,6 +1,9 @@
 trigger:
 - main
 
+variables:
+  runUnitTest: true
+
 stages:
   - stage: BuildAndroid
     displayName: 'Build Android'
