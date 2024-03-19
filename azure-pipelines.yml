@@ -34,6 +34,20 @@ stages:
               projects: '**/*.csproj'
               feedsToUse: 'select'
           - task: DotNetCoreCLI@2
+            displayName: 'Run Unit Test'
+            condition: eq(variables.runUnitTest, true)
+            inputs:
+              command: 'test'
+              projects: '**/*SampleMauiApp.Test.csproj'
+              arguments: '--collect "Code Coverage"'
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Results'
+            condition: eq(variables.runUnitTest, true)
+            inputs:
+              testResultsFormat: 'XUnit'
+              testResultsFiles: '**/*.trx'
+              searchFolder: '$(Agent.TempDirectory)'
+          - task: DotNetCoreCLI@2
             displayName: 'Build Android Project'
             inputs:
               command: 'build'
