@@ -43,6 +43,7 @@ stages:
               command: 'test'
               projects: '**/*SampleMauiApp.Test.csproj'
               arguments: '--collect "Code Coverage"'
+              publishTestResults: false
           - task: PublishTestResults@2
             displayName: 'Publish Test Results'
             condition: eq(variables.runUnitTest, true)
