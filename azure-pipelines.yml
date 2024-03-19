@@ -37,7 +37,7 @@ stages:
             displayName: 'Build Android Project'
             inputs:
               command: 'build'
-              projects:  '**/SampleMauiApp.csproj' # '**/*.sln'
+              projects:  '**/*.sln'
               arguments: '-f net8.0-android -c Release /p:AndroidSdkDirectory=$androidSdkPath'
           - task: CopyFiles@2
             displayName: 'Copy APK Files to Artifact Staging Directory'
