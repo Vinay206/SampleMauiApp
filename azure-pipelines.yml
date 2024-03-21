@@ -43,7 +43,7 @@ stages:
             inputs:
               command: 'test'
               projects: '**/*SampleMauiApp.Test.csproj'
-              arguments: '--configuration $(buildConfiguration) --collect "Code Coverage"'
+              arguments: '--framework net8.0 --collect "Code Coverage"'
           - task: PublishTestResults@2
             displayName: 'Publish Test Results'
             condition: eq(variables.runUnitTest, true)
